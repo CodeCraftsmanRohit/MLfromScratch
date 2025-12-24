@@ -17,26 +17,26 @@ The goal is to understand the underlying mathematics and logic behind these algo
 ### Theory
 Linear Regression is a supervised learning algorithm used for predicting continuous output values based on one or more input features. It assumes a linear relationship between the input features (X) and the output (y), modeled as:
 
-\[ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n + \epsilon \]
+$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n + \epsilon$$
 
 Where:
-- \( \beta_0 \) is the intercept (bias term).
-- \( \beta_1, \beta_2, \dots, \beta_n \) are the coefficients (weights) for each feature \( x_1, x_2, \dots, x_n \).
-- \( \epsilon \) is the error term.
+- $\beta_0$ is the intercept (bias term).
+- $\beta_1, \beta_2, \dots, \beta_n$ are the coefficients (weights) for each feature $x_1, x_2, \dots, x_n$.
+- $\epsilon$ is the error term.
 
 The model is trained by minimizing the **Mean Squared Error (MSE)** loss function:
 
-\[ MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2 \]
+$$MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2$$
 
-Where \( m \) is the number of samples, \( y_i \) is the actual value, and \( \hat{y}_i \) is the predicted value.
+Where $m$ is the number of samples, $y_i$ is the actual value, and $\hat{y}_i$ is the predicted value.
 
 Optimization is typically done using **Gradient Descent**, which iteratively updates the parameters:
 
-\[ \beta_j := \beta_j - \alpha \frac{\partial}{\partial \beta_j} MSE \]
+$$\beta_j := \beta_j - \alpha \frac{\partial}{\partial \beta_j} MSE$$
 
-Where \( \alpha \) is the learning rate. The partial derivatives are:
+Where $\alpha$ is the learning rate. The partial derivatives are:
 
-\[ \frac{\partial}{\partial \beta_j} MSE = -\frac{2}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i) x_{i,j} \]
+$$\frac{\partial}{\partial \beta_j} MSE = -\frac{2}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i) x_{i,j}$$
 
 This implementation uses simple univariate linear regression on salary data.
 
@@ -50,21 +50,21 @@ This implementation uses simple univariate linear regression on salary data.
 ### Theory
 Extending univariate linear regression, **Multiple Linear Regression** handles multiple input features. The model becomes:
 
-\[ y = \beta_0 + \sum_{j=1}^{n} \beta_j x_j + \epsilon \]
+$$y = \beta_0 + \sum_{j=1}^{n} \beta_j x_j + \epsilon$$
 
 Training follows the same principles: MSE minimization via Gradient Descent, but now gradients are computed across all features and the bias term. Matrix notation simplifies this:
 
-Let \( X \) be the feature matrix (m samples × n features), \( \theta \) the parameter vector (including bias), then:
+Let $X$ be the feature matrix (m samples × n features), $\theta$ the parameter vector (including bias), then:
 
-\[ \hat{y} = X \theta \]
+$$\hat{y} = X \theta$$
 
-\[ MSE = \frac{1}{2m} (X\theta - y)^T (X\theta - y) \]
+$$MSE = \frac{1}{2m} (X\theta - y)^T (X\theta - y)$$
 
 Gradient:
 
-\[ \nabla_\theta MSE = \frac{1}{m} X^T (X\theta - y) \]
+$$\nabla_\theta MSE = \frac{1}{m} X^T (X\theta - y)$$
 
-Update: \( \theta := \theta - \alpha \nabla_\theta MSE \)
+Update: $\theta := \theta - \alpha \nabla_\theta MSE$
 
 This is applied to the Boston Housing dataset, predicting house prices based on features like crime rate, rooms per dwelling, etc. Normalization (e.g., feature scaling) is crucial for convergence.
 
@@ -78,11 +78,11 @@ KNN is a **non-parametric, instance-based** supervised learning algorithm for cl
 
 Distance metric (e.g., Euclidean):
 
-\[ d(p, q) = \sqrt{\sum_{i=1}^{n} (p_i - q_i)^2} \]
+$$d(p, q) = \sqrt{\sum_{i=1}^{n} (p_i - q_i)^2}$$
 
 For classification:
 - Majority vote among K neighbors.
-- Tie-breaking via distance weighting: \( w_i = 1 / d_i \).
+- Tie-breaking via distance weighting: $w_i = 1 / d_i$.
 
 For regression:
 - Average (or weighted average) of K neighbors' values.
@@ -100,9 +100,9 @@ This implementation focuses on classification/regression on custom datasets.
 ### Theory
 K-Means is an **unsupervised learning** algorithm for partitioning data into K clusters based on similarity. It minimizes the within-cluster sum of squares (inertia):
 
-\[ J = \sum_{i=1}^{K} \sum_{x \in C_i} \| x - \mu_i \|^2 \]
+$$J = \sum_{i=1}^{K} \sum_{x \in C_i} \| x - \mu_i \|^2$$
 
-Where \( C_i \) is the i-th cluster, \( \mu_i \) its centroid.
+Where $C_i$ is the i-th cluster, $\mu_i$ its centroid.
 
 **Algorithm Steps:**
 1. Initialize K centroids (randomly or via K-Means++).
@@ -155,8 +155,9 @@ Accuracy improves with smaller K but risks overfitting; typical accuracy ~95% wi
 ### Contributing
 Feel free to fork, add more algorithms, or improve implementations!
 
+
 ### License
-This project is open-source. See [LICENSE](LICENSE) for details (add one if needed).
+This Notes is open-source. Contact Rohit😊 for Enquiry and Updates.
 
 ---
 
