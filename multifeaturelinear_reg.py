@@ -10,6 +10,7 @@ Original file is located at
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 ! pip install -q kaggle
 from google.colab import files
@@ -25,6 +26,16 @@ files.upload()
 !unzip /content/bostoncsv.zip
 
 housing = pd.read_csv('/content/Boston.csv')
+
+df_housing = housing.select_dtypes(include=[np.number])
+
+# . Create correlation heatmap
+plt.figure(figsize=(8, 12))
+sns.heatmap(df_housing.corr(), annot=True, cmap="coolwarm")
+plt.show()
+
+sns.pairplot(housing)
+plt.show()
 
 housing.head()
 
