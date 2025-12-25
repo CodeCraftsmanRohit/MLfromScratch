@@ -231,6 +231,50 @@ flowchart TD
 - `Logistic_Regression.ipynb`: Implementation on Titanic survival prediction.
 - `train.csv`: Titanic training dataset.
 
+## Support Vector Machines (SVM)
+
+### Theory
+Support Vector Machines (SVM) is a supervised learning algorithm primarily for classification (and regression via SVR), that aims to find the optimal hyperplane separating classes by maximizing the margin (distance) between the closest points (support vectors) of different classes. For linearly inseparable data, SVM uses the **kernel trick** (e.g., RBF kernel) to implicitly map features to a higher-dimensional space where separation is possible.
+
+The primal optimization problem minimizes:
+
+$$\min_{w, b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{m} \xi_i$$
+
+Subject to $y_i (w^T x_i + b) \geq 1 - \xi_i$, $\xi_i \geq 0$ (soft margin with slack variables $\xi_i$).
+
+- **C**: Regularization parameter (high C: strict, low misclassification tolerance; low C: wider margin, more tolerance).
+- **Gamma** (for RBF kernel): Controls decision boundary curvature (low gamma: smooth; high gamma: complex/overfitting).
+- **Kernel**: 'linear' for straight boundaries, 'rbf' for non-linear curved boundaries.
+
+SVM is robust to outliers and effective in high dimensions but requires mandatory feature scaling. This implementation uses the Titanic dataset for binary classification (survival prediction) with RBF kernel.
+
+| Parameter     | Effect on Boundary |
+| ------------- | ------------------ |
+| kernel=linear | Straight line      |
+| kernel=rbf    | Curved line        |
+| Small C       | Wide margin        |
+| Large C       | Narrow margin      |
+| Small gamma   | Smooth boundary    |
+| Large gamma   | Complex boundary   |
+
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Data e.g., Titanic train.csv] --> B[Clean Missing Values Fill/Impute]
+    B --> C[Encode Categorical Features e.g., Sex, Embarked]
+    C --> D[Feature Scaling StandardScaler Mandatory]
+    D --> E[Split Features X / Target Y]
+    E --> F[Select Kernel C Gamma Parameters]
+    F --> G[Find Optimal Hyperplane / Kernel Transform]
+    G --> H[Maximize Margin with Support Vectors]
+    H --> I[Compute Decision Function for Predictions]
+    I --> J[Output Class Labels 0/1]
+```
+
+**Files:**
+- `SVM.ipynb` / `svm.py`: Implementation on Titanic survival prediction with visualizations.
+- `train.csv`: Titanic training dataset.
+
 ## Getting Started
 
 ### Prerequisites
