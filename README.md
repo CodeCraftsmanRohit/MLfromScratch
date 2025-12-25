@@ -1,6 +1,6 @@
 # ML from Scratch
 
-This repository implements core Machine Learning algorithms from scratch using Python and Jupyter Notebooks. It covers foundational concepts like Linear Regression, K-Nearest Neighbors (KNN), K-Means Clustering, and KNN on the MNIST dataset. Each implementation includes data loading, model building, training, and evaluation without relying on high-level libraries like scikit-learn (except for data handling where necessary).
+This repository implements core Machine Learning algorithms from scratch using Python and Jupyter Notebooks. It covers foundational concepts like Linear Regression, K-Nearest Neighbors (KNN), K-Means Clustering, KNN on the MNIST dataset, and Logistic Regression. Each implementation includes data loading, model building, training, and evaluation without relying on high-level libraries like scikit-learn (except for data handling where necessary).
 
 The goal is to understand the underlying mathematics and logic behind these algorithms by coding them manually.
 
@@ -10,6 +10,7 @@ The goal is to understand the underlying mathematics and logic behind these algo
 - [K-Nearest Neighbors (KNN)](#k-nearest-neighbors-knn)
 - [K-Means Clustering](#k-means-clustering)
 - [KNN on MNIST Dataset](#knn-on-mnist-dataset)
+- [Logistic Regression](#logistic-regression)
 - [Getting Started](#getting-started)
 
 ## Linear Regression
@@ -40,6 +41,18 @@ $$\frac{\partial}{\partial \beta_j} MSE = -\frac{2}{m} \sum_{i=1}^{m} (y_i - \ha
 
 This implementation uses simple univariate linear regression on salary data.
 
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Data] --> B[Split Features X / Target Y]
+    B --> C[Initialize Parameters β]
+    C --> D[Compute Predictions ŷ = Xβ]
+    D --> E[Calculate MSE Loss]
+    E --> F[Gradient Descent Update β]
+    F --> D
+    D --> G[Output Predictions]
+```
+
 **Files:**
 - `LinearRegression.ipynb` / `linearregression.py`: Core implementation.
 - `SalaryData.ipynb` / `salarydata.py`: Example on salary prediction.
@@ -68,6 +81,20 @@ Update: $\theta := \theta - \alpha \nabla_\theta MSE$
 
 This is applied to the Boston Housing dataset, predicting house prices based on features like crime rate, rooms per dwelling, etc. Normalization (e.g., feature scaling) is crucial for convergence.
 
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Multi-Feature Data] --> B[Feature Scaling/Normalization]
+    B --> C[Split Features X / Target Y]
+    C --> D[Initialize Parameters θ]
+    D --> E[Matrix Multiply: ŷ = Xθ]
+    E --> F[Calculate MSE Loss]
+    F --> G[Compute Gradient ∇θ MSE]
+    G --> H[Gradient Descent Update θ]
+    H --> E
+    E --> I[Output Predictions]
+```
+
 **Files:**
 - `MultiFeatureLinear_Reg.ipynb` / `multifeaturelinear_reg.py`: Implementation using Boston dataset.
 
@@ -90,6 +117,17 @@ For regression:
 K is chosen via cross-validation; too small K leads to overfitting, too large to underfitting. Preprocessing includes normalization to prevent feature dominance.
 
 This implementation focuses on classification/regression on custom datasets.
+
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Training Data] --> B[Normalize/Scale Features]
+    B --> C[New Query Point]
+    C --> D[Compute Distances to All Training Points]
+    D --> E[Select K Nearest Neighbors]
+    E --> F[Aggregate: Vote for Class / Average for Regression]
+    F --> G[Output Prediction]
+```
 
 **Files:**
 - `KNN.ipynb` / `knn.py`: Core KNN algorithm.
@@ -114,6 +152,17 @@ Elbow method determines optimal K by plotting inertia vs. K. Sensitive to initia
 
 This is demonstrated on image segmentation (elephant.jpg) and synthetic data.
 
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Unlabeled Data] --> B[Initialize K Centroids]
+    B --> C[Assign Points to Nearest Centroid]
+    C --> D[Update Centroids as Cluster Means]
+    D --> E{Converged?}
+    E -->|No| C
+    E -->|Yes| F[Output Cluster Assignments & Centroids]
+```
+
 **Files:**
 - `Kmeans.ipynb` / `kmeans.py`: Implementation.
 - `elephant.jpg`: Sample image for clustering.
@@ -127,8 +176,60 @@ Each image is flattened to a 784-dimensional vector. KNN classifies by finding K
 
 Accuracy improves with smaller K but risks overfitting; typical accuracy ~95% with K=3-5.
 
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load MNIST Dataset] --> B[Flatten Images to Vectors]
+    B --> C[Split Train/Test]
+    C --> D[New Image Query]
+    D --> E[Compute Distances to Training Images]
+    E --> F[Select K Nearest Images]
+    F --> G[Majority Vote on Labels]
+    G --> H[Output Digit Class]
+```
+
 **Files:**
 - `MNIST.ipynb` / `mnist.py`: KNN classifier on MNIST.
+
+## Logistic Regression
+
+### Theory
+Logistic Regression is a supervised learning algorithm for binary (or multi-class) classification, predicting the probability of a binary outcome (0 or 1) based on input features. Unlike linear regression, it uses the **sigmoid (logistic) function** to map linear outputs to probabilities between 0 and 1:
+
+$$\sigma(z) = \frac{1}{1 + e^{-z}}$$
+
+Where $z = \beta_0 + \sum_{j=1}^{n} \beta_j x_j$ (linear combination).
+
+The model minimizes the **Binary Cross-Entropy (Log Loss)**:
+
+$$J(\beta) = -\frac{1}{m} \sum_{i=1}^{m} [y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)]$$
+
+Where $\hat{y}_i = \sigma(X_i \beta)$, and optimization uses Gradient Descent or solvers like SAG (Stochastic Average Gradient):
+
+$$\nabla_\beta J = \frac{1}{m} X^T (\hat{y} - y)$$
+
+Predictions are thresholded at 0.5 for binary decisions. This implementation uses the Titanic dataset to predict survival (0: no, 1: yes) based on features like age, sex, class, etc. Preprocessing (handling missing values, encoding, scaling) is essential.
+
+### Data Flow
+```mermaid
+flowchart TD
+    A[Load Titanic Data] --> B[Handle Missing Values]
+    B --> C[Encode Categorical Features]
+    C --> D[Feature Scaling]
+    D --> E[Split X and Y]
+    E --> F[Initialize Parameters theta]
+    F --> G[Compute Linear Output z]
+    G --> H[Apply Sigmoid Function]
+    H --> I[Compute Cross Entropy Loss]
+    I --> J[Gradient Descent Update]
+    J --> G
+    G --> K[Threshold Output 0 or 1]
+
+```
+
+**Files:**
+- `Logistic_Regression.ipynb`: Implementation on Titanic survival prediction.
+- `train.csv`: Titanic training dataset.
 
 ## Getting Started
 
